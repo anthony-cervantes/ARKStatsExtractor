@@ -76,14 +76,20 @@ fn main() -> eframe::Result<()> {
     if args.gui {
         let species = load_species().expect("load species");
         let lib = CreatureLibrary::load(&args.library).expect("load library");
-        let _multipliers =
-            load_server_multipliers_profile(&args.profile).expect("load multipliers");
+        let multipliers = load_server_multipliers_profile(&args.profile).expect("load multipliers");
         let lib_path = std::path::PathBuf::from(&args.library);
         let options = eframe::NativeOptions::default();
         eframe::run_native(
             "ARK Stats",
             options,
-            Box::new(move |_cc| Ok(Box::new(app::LibraryApp::new(species, lib, lib_path)))),
+            Box::new(move |_cc| {
+                Ok(Box::new(app::LibraryApp::new(
+                    species,
+                    lib,
+                    lib_path,
+                    multipliers,
+                )))
+            }),
         )?;
     } else {
         run_cli(&args).expect("run cli");

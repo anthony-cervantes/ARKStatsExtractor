@@ -1,6 +1,7 @@
 use ARKStatsExtractor::{
     creature::{Creature, Sex},
     library::CreatureLibrary,
+    server_multipliers::ServerMultipliers,
     stats::STATS_COUNT,
 };
 use tempfile::tempdir;
@@ -37,4 +38,33 @@ fn remove_creature() {
     ));
     assert!(lib.remove_by_name("Alice"));
     assert!(lib.creatures.is_empty());
+}
+
+#[test]
+fn top_breeding_pairs_selects_highest_score() {
+    let mut lib = CreatureLibrary::default();
+    lib.add(Creature::with_stats(
+        "Mom".to_string(),
+        "Rex".to_string(),
+        Sex::Female,
+        [10; STATS_COUNT],
+        0,
+    ));
+    lib.add(Creature::with_stats(
+        "Dad1".to_string(),
+        "Rex".to_string(),
+        Sex::Male,
+        [8; STATS_COUNT],
+        0,
+    ));
+    lib.add(Creature::with_stats(
+        "Dad2".to_string(),
+        "Rex".to_string(),
+        Sex::Male,
+        [12; STATS_COUNT],
+        0,
+    ));
+    let pairs = lib.top_breeding_pairs(Some(&ServerMultipliers::default()), 1);
+    assert_eq!(pairs.len(), 1);
+    assert_eq!(pairs[0].father.name, "Dad2");
 }
