@@ -1,4 +1,5 @@
 #![allow(non_snake_case)]
+pub mod breeding;
 pub mod server_multipliers;
 pub mod species;
 pub mod stats;
