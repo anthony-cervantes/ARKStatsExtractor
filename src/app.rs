@@ -123,6 +123,15 @@ impl eframe::App for LibraryApp {
                     self.save_to_file();
                     self.new_name.clear();
                 }
+
+                if ui.button("Import OCR").clicked() {
+                    if let Ok(creature) =
+                        ARKStatsExtractor::ocr::read_creature_from_image("screenshot.png")
+                    {
+                        self.library.add(creature);
+                        self.save_to_file();
+                    }
+                }
             });
 
             ui.separator();
