@@ -4,6 +4,7 @@ use ARKStatsExtractor::{
         score::Score,
     },
     creature::{Creature, Sex},
+    load_server_multipliers_profile,
     stats::STATS_COUNT,
 };
 
@@ -36,6 +37,7 @@ fn breeding_pair_score_calculation() {
         [5; STATS_COUNT],
         0,
     );
-    let score = calculate_score(&mother, &father);
-    assert_eq!(score, Score::primary((10 * STATS_COUNT as i32) as f64));
+    let sm = load_server_multipliers_profile("official").unwrap();
+    let score = calculate_score(&mother, &father, Some(&sm));
+    assert!((score.one_number() - 103.7).abs() < f64::EPSILON);
 }

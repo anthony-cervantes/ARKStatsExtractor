@@ -1,4 +1,6 @@
-use ARKStatsExtractor::{server_multipliers::ServerMultipliersFile, species::Species};
+use ARKStatsExtractor::{
+    load_server_multipliers_profile, server_multipliers::ServerMultipliersFile, species::Species,
+};
 
 #[test]
 fn load_species_json() {
@@ -17,4 +19,10 @@ fn load_server_multipliers() {
     let sm: ServerMultipliersFile =
         serde_json::from_str(&data).expect("deserialize server multipliers");
     assert!(sm.server_multiplier_dictionary.contains_key("official"));
+}
+
+#[test]
+fn load_server_multipliers_profile_function() {
+    let sm = load_server_multipliers_profile("singleplayer").unwrap();
+    assert!(sm.mating_interval_multiplier.is_some());
 }

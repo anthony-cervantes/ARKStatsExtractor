@@ -20,7 +20,7 @@ This document outlines a stepwise approach to port the existing .NET codebase to
     - [x] List creatures with filtering by species and sex.
     - [x] Allow adding and removing creatures via the GUI.
 11. [ ] **Server multiplier profiles**.
-    - [ ] Parse multiplier files and allow selecting a profile via CLI flag.
+    - [x] Parse multiplier files and allow selecting a profile via CLI flag.
     - [ ] Apply multipliers when calculating stats in the library and breeding planner.
 12. [ ] **Breeding planner implementation**.
     - [ ] Calculate possible offspring levels and mutation chances.

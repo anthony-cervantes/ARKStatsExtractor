@@ -1,7 +1,7 @@
 use ARKStatsExtractor::{
     creature::{Creature, Sex},
     library::CreatureLibrary,
-    load_species,
+    load_server_multipliers_profile, load_species,
     stats::STATS_COUNT,
 };
 use clap::{Parser, Subcommand};
@@ -31,12 +31,17 @@ struct Args {
     #[arg(long, default_value = "creatures.json")]
     library: String,
 
+    /// Server multiplier profile
+    #[arg(long, default_value = "official")]
+    profile: String,
+
     #[command(subcommand)]
     command: Option<Commands>,
 }
 
 fn run_cli(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
     let mut lib = CreatureLibrary::load(&args.library)?;
+    let _multipliers = load_server_multipliers_profile(&args.profile)?;
     match &args.command {
         Some(Commands::Add { name, species, sex }) => {
             let sex = match sex.to_lowercase().as_str() {
@@ -70,6 +75,8 @@ fn main() -> eframe::Result<()> {
     if args.gui {
         let species = load_species().expect("load species");
         let lib = CreatureLibrary::load(&args.library).expect("load library");
+        let _multipliers =
+            load_server_multipliers_profile(&args.profile).expect("load multipliers");
         let lib_path = std::path::PathBuf::from(&args.library);
         let options = eframe::NativeOptions::default();
         eframe::run_native(
