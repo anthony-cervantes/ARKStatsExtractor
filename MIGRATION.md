@@ -26,9 +26,9 @@ This document outlines a stepwise approach to port the existing .NET codebase to
     - [x] Calculate possible offspring levels and mutation chances.
     - [x] Display top scoring breeding pairs in the GUI.
     - [x] Unit tests for breeding calculations.
-13. [ ] **OCR import**.
-    - [ ] Use the `leptess` crate to read creature data from screenshots.
-    - [ ] Provide a CLI command and GUI button to trigger OCR import.
+13. [x] **OCR import**.
+    - [x] Use the `leptess` crate to read creature data from screenshots.
+    - [x] Provide a CLI command and GUI button to trigger OCR import.
 14. [ ] **Packaging and release**.
     - [ ] Build native binaries for major platforms with `cargo build --release`.
     - [ ] Update `README.md` with build and usage instructions.

@@ -19,6 +19,8 @@ enum Commands {
     },
     /// Remove a creature from the library by name
     Remove { name: String },
+    /// Import a creature from an image using OCR
+    Ocr { image: String },
 }
 
 #[derive(Parser)]
@@ -60,6 +62,11 @@ fn run_cli(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
             } else {
                 eprintln!("Creature not found: {name}");
             }
+        }
+        Some(Commands::Ocr { image }) => {
+            let creature = ARKStatsExtractor::ocr::read_creature_from_image(image)?;
+            lib.add(creature);
+            lib.save(&args.library)?;
         }
         None => {
             for c in &lib.creatures {
