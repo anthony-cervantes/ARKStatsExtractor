@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::stats::STATS_COUNT;
+use crate::{server_multipliers::ServerMultipliers, stats::STATS_COUNT};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum Sex {
@@ -45,5 +45,29 @@ impl Creature {
             stats,
             mutations,
         }
+    }
+
+    pub fn total_with_multipliers(&self, multipliers: Option<&ServerMultipliers>) -> f64 {
+        self.stats
+            .iter()
+            .enumerate()
+            .map(|(i, s)| {
+                let base = *s as f64;
+                if let Some(sm) = multipliers {
+                    if let Some(stat_mults) = sm
+                        .stat_multipliers
+                        .as_ref()
+                        .and_then(|v| v.get(i))
+                        .and_then(|o| o.as_ref())
+                    {
+                        base * stat_mults[ServerMultipliers::INDEX_LEVEL_DOM]
+                    } else {
+                        base
+                    }
+                } else {
+                    base
+                }
+            })
+            .sum()
     }
 }

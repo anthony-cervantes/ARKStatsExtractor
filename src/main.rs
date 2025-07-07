@@ -41,7 +41,7 @@ struct Args {
 
 fn run_cli(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
     let mut lib = CreatureLibrary::load(&args.library)?;
-    let _multipliers = load_server_multipliers_profile(&args.profile)?;
+    let multipliers = load_server_multipliers_profile(&args.profile)?;
     match &args.command {
         Some(Commands::Add { name, species, sex }) => {
             let sex = match sex.to_lowercase().as_str() {
@@ -63,7 +63,8 @@ fn run_cli(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
         }
         None => {
             for c in &lib.creatures {
-                println!("{} - {} ({:?})", c.name, c.species, c.sex);
+                let total = c.total_with_multipliers(Some(&multipliers));
+                println!("{} - {} ({:?}) {:.1}", c.name, c.species, c.sex, total);
             }
         }
     }
