@@ -1,7 +1,11 @@
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 
-use crate::creature::Creature;
+use crate::{
+    breeding::breeding_pair::BreedingPair,
+    creature::{Creature, Sex},
+    server_multipliers::ServerMultipliers,
+};
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct CreatureLibrary {
@@ -34,5 +38,34 @@ impl CreatureLibrary {
         } else {
             false
         }
+    }
+
+    pub fn top_breeding_pairs(
+        &self,
+        multipliers: Option<&ServerMultipliers>,
+        top_n: usize,
+    ) -> Vec<BreedingPair> {
+        let mut pairs = Vec::new();
+        for mother in &self.creatures {
+            if mother.sex != Sex::Female {
+                continue;
+            }
+            for father in &self.creatures {
+                if father.sex != Sex::Male {
+                    continue;
+                }
+                if mother.species != father.species {
+                    continue;
+                }
+                pairs.push(BreedingPair::from_parents(
+                    mother.clone(),
+                    father.clone(),
+                    multipliers,
+                ));
+            }
+        }
+        pairs.sort_by(|a, b| b.breeding_score.cmp(&a.breeding_score));
+        pairs.truncate(top_n);
+        pairs
     }
 }

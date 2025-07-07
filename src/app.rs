@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use ARKStatsExtractor::{
     creature::{Creature, Sex},
     library::CreatureLibrary,
+    server_multipliers::ServerMultipliers,
     species::Species,
 };
 
@@ -11,6 +12,7 @@ pub struct LibraryApp {
     library: CreatureLibrary,
     species: Vec<Species>,
     library_path: PathBuf,
+    multipliers: ServerMultipliers,
     filter_species: Option<String>,
     filter_sex: Option<Sex>,
     new_name: String,
@@ -19,11 +21,17 @@ pub struct LibraryApp {
 }
 
 impl LibraryApp {
-    pub fn new(species: Vec<Species>, library: CreatureLibrary, library_path: PathBuf) -> Self {
+    pub fn new(
+        species: Vec<Species>,
+        library: CreatureLibrary,
+        library_path: PathBuf,
+        multipliers: ServerMultipliers,
+    ) -> Self {
         Self {
             library,
             species,
             library_path,
+            multipliers,
             filter_species: None,
             filter_sex: None,
             new_name: String::new(),
@@ -143,6 +151,22 @@ impl eframe::App for LibraryApp {
             if let Some(idx) = remove_index {
                 self.library.creatures.remove(idx);
                 self.save_to_file();
+            }
+
+            ui.separator();
+            ui.heading("Top Breeding Pairs");
+            for pair in self
+                .library
+                .top_breeding_pairs(Some(&self.multipliers), 5)
+                .into_iter()
+            {
+                ui.label(format!(
+                    "{} x {} - {:.1}% chance {:.1}",
+                    pair.mother.name,
+                    pair.father.name,
+                    pair.mutation_probability * 100.0,
+                    pair.breeding_score.one_number()
+                ));
             }
         });
     }

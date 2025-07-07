@@ -19,13 +19,13 @@ This document outlines a stepwise approach to port the existing .NET codebase to
 10. [x] **GUI for creature library**.
     - [x] List creatures with filtering by species and sex.
     - [x] Allow adding and removing creatures via the GUI.
-11. [ ] **Server multiplier profiles**.
+11. [x] **Server multiplier profiles**.
     - [x] Parse multiplier files and allow selecting a profile via CLI flag.
     - [x] Apply multipliers when calculating stats in the library and breeding planner.
-12. [ ] **Breeding planner implementation**.
-    - [ ] Calculate possible offspring levels and mutation chances.
-    - [ ] Display top scoring breeding pairs in the GUI.
-    - [ ] Unit tests for breeding calculations.
+12. [x] **Breeding planner implementation**.
+    - [x] Calculate possible offspring levels and mutation chances.
+    - [x] Display top scoring breeding pairs in the GUI.
+    - [x] Unit tests for breeding calculations.
 13. [ ] **OCR import**.
     - [ ] Use the `leptess` crate to read creature data from screenshots.
     - [ ] Provide a CLI command and GUI button to trigger OCR import.
