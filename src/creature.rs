@@ -12,6 +12,8 @@ pub enum Sex {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Creature {
     pub name: String,
+    #[serde(default)]
+    pub species: String,
     pub sex: Sex,
     pub stats: [i32; STATS_COUNT],
     #[serde(default)]
@@ -19,18 +21,26 @@ pub struct Creature {
 }
 
 impl Creature {
-    pub fn new(name: String, sex: Sex, mutations: i32) -> Self {
+    pub fn new(name: String, species: String, sex: Sex, mutations: i32) -> Self {
         Self {
             name,
+            species,
             sex,
             stats: [0; STATS_COUNT],
             mutations,
         }
     }
 
-    pub fn with_stats(name: String, sex: Sex, stats: [i32; STATS_COUNT], mutations: i32) -> Self {
+    pub fn with_stats(
+        name: String,
+        species: String,
+        sex: Sex,
+        stats: [i32; STATS_COUNT],
+        mutations: i32,
+    ) -> Self {
         Self {
             name,
+            species,
             sex,
             stats,
             mutations,
