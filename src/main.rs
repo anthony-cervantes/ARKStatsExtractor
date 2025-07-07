@@ -13,6 +13,7 @@ enum Commands {
     /// Add a creature to the library
     Add {
         name: String,
+        species: String,
         #[arg(long)]
         sex: String,
     },
@@ -37,13 +38,14 @@ struct Args {
 fn run_cli(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
     let mut lib = CreatureLibrary::load(&args.library)?;
     match &args.command {
-        Some(Commands::Add { name, sex }) => {
+        Some(Commands::Add { name, species, sex }) => {
             let sex = match sex.to_lowercase().as_str() {
                 "male" | "m" => Sex::Male,
                 "female" | "f" => Sex::Female,
                 _ => Sex::Unknown,
             };
-            let creature = Creature::with_stats(name.clone(), sex, [0; STATS_COUNT], 0);
+            let creature =
+                Creature::with_stats(name.clone(), species.clone(), sex, [0; STATS_COUNT], 0);
             lib.add(creature);
             lib.save(&args.library)?;
         }
@@ -56,7 +58,7 @@ fn run_cli(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
         }
         None => {
             for c in &lib.creatures {
-                println!("{} ({:?})", c.name, c.sex);
+                println!("{} - {} ({:?})", c.name, c.species, c.sex);
             }
         }
     }
@@ -67,11 +69,13 @@ fn main() -> eframe::Result<()> {
     let args = Args::parse();
     if args.gui {
         let species = load_species().expect("load species");
+        let lib = CreatureLibrary::load(&args.library).expect("load library");
+        let lib_path = std::path::PathBuf::from(&args.library);
         let options = eframe::NativeOptions::default();
         eframe::run_native(
             "ARK Stats",
             options,
-            Box::new(|_cc| Ok(Box::new(app::SpeciesApp::new(species)))),
+            Box::new(move |_cc| Ok(Box::new(app::LibraryApp::new(species, lib, lib_path)))),
         )?;
     } else {
         run_cli(&args).expect("run cli");
