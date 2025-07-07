@@ -27,4 +27,19 @@ impl BreedingPair {
             highest_offspring_over_level_limit,
         }
     }
+
+    pub fn from_parents(mother: Creature, father: Creature) -> Self {
+        let breeding_score = calculate_score(&mother, &father);
+        Self::new(mother, father, breeding_score, 0.0, false)
+    }
+}
+
+pub fn calculate_score(mother: &Creature, father: &Creature) -> Score {
+    let total: i32 = mother
+        .stats
+        .iter()
+        .zip(father.stats.iter())
+        .map(|(m, f)| (*m).max(*f))
+        .sum();
+    Score::primary(total as f64)
 }

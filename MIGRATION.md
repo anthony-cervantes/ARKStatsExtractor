@@ -11,7 +11,7 @@ This document outlines a stepwise approach to port the existing .NET codebase to
 7. [x] **Build minimal CLI and GUI** that load and display data.
 8. [ ] **Continue porting features** such as the breeding planner, OCR, and other tools.
     - [x] Port `Score` struct from breeding planner.
-    - [ ] Add `Creature` stat fields and implement breeding pair scoring.
+    - [x] Add `Creature` stat fields and implement breeding pair scoring.
 9. [ ] **Persist creature library**.
     - [ ] Serialize and deserialize `Creature` records to JSON.
     - [ ] Provide CLI commands to add/remove creatures.
