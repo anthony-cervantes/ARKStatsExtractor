@@ -1,4 +1,7 @@
-use crate::{breeding::score::Score, creature::Creature, server_multipliers::ServerMultipliers};
+use crate::{
+    breeding::score::Score, creature::Creature, server_multipliers::ServerMultipliers,
+    stats::STATS_COUNT,
+};
 
 #[derive(Debug, Clone)]
 pub struct BreedingPair {
@@ -34,7 +37,12 @@ impl BreedingPair {
         multipliers: Option<&ServerMultipliers>,
     ) -> Self {
         let breeding_score = calculate_score(&mother, &father, multipliers);
-        Self::new(mother, father, breeding_score, 0.0, false)
+        let mutation_probability = calculate_mutation_chance(&mother, &father);
+        Self::new(mother, father, breeding_score, mutation_probability, false)
+    }
+
+    pub fn offspring_levels(&self) -> [i32; STATS_COUNT] {
+        possible_offspring_levels(&self.mother, &self.father)
     }
 }
 
@@ -67,4 +75,18 @@ pub fn calculate_score(
         })
         .sum();
     Score::primary(total)
+}
+
+pub fn possible_offspring_levels(mother: &Creature, father: &Creature) -> [i32; STATS_COUNT] {
+    let mut levels = [0; STATS_COUNT];
+    for (i, level) in levels.iter_mut().enumerate().take(STATS_COUNT) {
+        *level = mother.stats[i].max(father.stats[i]);
+    }
+    levels
+}
+
+pub fn calculate_mutation_chance(mother: &Creature, father: &Creature) -> f64 {
+    let m = if mother.mutations < 20 { 0.025 } else { 0.0 };
+    let f = if father.mutations < 20 { 0.025 } else { 0.0 };
+    1.0 - (1.0 - m) * (1.0 - f)
 }

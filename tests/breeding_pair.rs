@@ -1,6 +1,8 @@
 use ARKStatsExtractor::{
     breeding::{
-        breeding_pair::{BreedingPair, calculate_score},
+        breeding_pair::{
+            BreedingPair, calculate_mutation_chance, calculate_score, possible_offspring_levels,
+        },
         score::Score,
     },
     creature::{Creature, Sex},
@@ -40,4 +42,28 @@ fn breeding_pair_score_calculation() {
     let sm = load_server_multipliers_profile("official").unwrap();
     let score = calculate_score(&mother, &father, Some(&sm));
     assert!((score.one_number() - 103.7).abs() < f64::EPSILON);
+}
+
+#[test]
+fn offspring_levels_and_mutation_chance() {
+    let mother = Creature::with_stats(
+        "Mom".to_string(),
+        "Rex".to_string(),
+        Sex::Female,
+        [10; STATS_COUNT],
+        0,
+    );
+    let father = Creature::with_stats(
+        "Dad".to_string(),
+        "Rex".to_string(),
+        Sex::Male,
+        [8; STATS_COUNT],
+        10,
+    );
+    let pair = BreedingPair::from_parents(mother.clone(), father.clone(), None);
+    let expected_levels = possible_offspring_levels(&mother, &father);
+    assert_eq!(pair.offspring_levels(), expected_levels);
+
+    let expected = calculate_mutation_chance(&mother, &father);
+    assert!((pair.mutation_probability - expected).abs() < f64::EPSILON);
 }
