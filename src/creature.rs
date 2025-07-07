@@ -9,7 +9,7 @@ pub enum Sex {
     Female,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Creature {
     pub name: String,
     pub sex: Sex,
