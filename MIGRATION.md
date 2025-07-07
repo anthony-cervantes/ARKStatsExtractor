@@ -8,7 +8,7 @@ This document outlines a stepwise approach to port the existing .NET codebase to
 4. [x] **Add GUI framework**: `cargo add eframe@0.31.1`.
 5. [x] **Port core structs**: `Species`, `Stats`, `ServerMultipliers`.
 6. [x] **Implement JSON loading tests** to verify data parsing.
-7. [ ] **Build minimal CLI and GUI** that load and display data.
+7. [x] **Build minimal CLI and GUI** that load and display data.
 8. [ ] **Continue porting features** such as the breeding planner, OCR, and other tools.
 
 Each migration step should be kept small, with tests and formatting run after every change to ensure stability.
