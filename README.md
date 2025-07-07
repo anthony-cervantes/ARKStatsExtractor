@@ -74,5 +74,14 @@ The following species may show wrong stat-values ingame that prevents a correct 
 ## Download
 Download the [latest release here](https://github.com/cadon/ARKStatsExtractor/releases/latest).
 
+## Building from Source
+To compile the Rust version yourself, run:
+
+```bash
+cargo build --release
+```
+
+The resulting binary will be located in `target/release/ARKStatsExtractor` (or with `.exe` on Windows).
+
 ## Patchnotes
 For a full list see [Releases](https://github.com/cadon/ARKStatsExtractor/releases).
