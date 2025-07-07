@@ -29,8 +29,8 @@ This document outlines a stepwise approach to port the existing .NET codebase to
 13. [x] **OCR import**.
     - [x] Use the `leptess` crate to read creature data from screenshots.
     - [x] Provide a CLI command and GUI button to trigger OCR import.
-14. [ ] **Packaging and release**.
-    - [ ] Build native binaries for major platforms with `cargo build --release`.
-    - [ ] Update `README.md` with build and usage instructions.
+14. [x] **Packaging and release**.
+    - [x] Build native binaries for major platforms with `cargo build --release`.
+    - [x] Update `README.md` with build and usage instructions.
 
 Each migration step should be kept small, with tests and formatting run after every change to ensure stability.
