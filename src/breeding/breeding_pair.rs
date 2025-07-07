@@ -1,4 +1,4 @@
-use crate::{breeding::score::Score, creature::Creature};
+use crate::{breeding::score::Score, creature::Creature, server_multipliers::ServerMultipliers};
 
 #[derive(Debug, Clone)]
 pub struct BreedingPair {
@@ -28,18 +28,43 @@ impl BreedingPair {
         }
     }
 
-    pub fn from_parents(mother: Creature, father: Creature) -> Self {
-        let breeding_score = calculate_score(&mother, &father);
+    pub fn from_parents(
+        mother: Creature,
+        father: Creature,
+        multipliers: Option<&ServerMultipliers>,
+    ) -> Self {
+        let breeding_score = calculate_score(&mother, &father, multipliers);
         Self::new(mother, father, breeding_score, 0.0, false)
     }
 }
 
-pub fn calculate_score(mother: &Creature, father: &Creature) -> Score {
-    let total: i32 = mother
+pub fn calculate_score(
+    mother: &Creature,
+    father: &Creature,
+    multipliers: Option<&ServerMultipliers>,
+) -> Score {
+    let total: f64 = mother
         .stats
         .iter()
         .zip(father.stats.iter())
-        .map(|(m, f)| (*m).max(*f))
+        .enumerate()
+        .map(|(i, (m, f))| {
+            let base = (*m).max(*f) as f64;
+            if let Some(sm) = multipliers {
+                if let Some(stat_mults) = sm
+                    .stat_multipliers
+                    .as_ref()
+                    .and_then(|v| v.get(i))
+                    .and_then(|o| o.as_ref())
+                {
+                    base * stat_mults[ServerMultipliers::INDEX_LEVEL_DOM]
+                } else {
+                    base
+                }
+            } else {
+                base
+            }
+        })
         .sum();
-    Score::primary(total as f64)
+    Score::primary(total)
 }

@@ -16,3 +16,19 @@ pub fn load_species() -> Result<Vec<species::Species>, Box<dyn Error>> {
     let species: Vec<species::Species> = serde_json::from_value(species_value)?;
     Ok(species)
 }
+
+pub fn load_server_multipliers() -> Result<server_multipliers::ServerMultipliersFile, Box<dyn Error>>
+{
+    let data = std::fs::read_to_string("ARKBreedingStats/json/serverMultipliers.json")?;
+    Ok(serde_json::from_str(&data)?)
+}
+
+pub fn load_server_multipliers_profile(
+    profile: &str,
+) -> Result<server_multipliers::ServerMultipliers, Box<dyn Error>> {
+    let file = load_server_multipliers()?;
+    file.server_multiplier_dictionary
+        .get(profile)
+        .cloned()
+        .ok_or_else(|| format!("unknown profile: {profile}").into())
+}

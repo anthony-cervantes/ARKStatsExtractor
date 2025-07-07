@@ -47,3 +47,10 @@ pub struct ServerMultipliersFile {
     #[serde(rename = "serverMultiplierDictionary", default)]
     pub server_multiplier_dictionary: std::collections::HashMap<String, ServerMultipliers>,
 }
+
+impl ServerMultipliers {
+    pub const INDEX_TAMING_ADD: usize = 0;
+    pub const INDEX_TAMING_MULT: usize = 1;
+    pub const INDEX_LEVEL_DOM: usize = 2;
+    pub const INDEX_LEVEL_WILD: usize = 3;
+}
