@@ -10,12 +10,12 @@ This document outlines a stepwise approach to port the existing .NET codebase to
 6. [x] **Implement JSON loading tests** to verify data parsing.
 7. [x] **Build minimal CLI and GUI** that load and display data.
     - [x] Provide a `--gui` flag to launch the graphical interface.
-8. [ ] **Continue porting features** such as the breeding planner, OCR, and other tools.
+8. [x] **Continue porting features** such as the breeding planner, OCR, and other tools.
     - [x] Port `Score` struct from breeding planner.
     - [x] Add `Creature` stat fields and implement breeding pair scoring.
     - [x] Port advanced breeding planner tools for in-depth pair analysis.
     - [x] Implement raising and taming controls with timers and consumables.
-    - [ ] Migrate remaining utilities such as export managers and overlays.
+    - [x] Migrate remaining utilities such as export managers and overlays.
 9. [x] **Persist creature library**.
     - [x] Serialize and deserialize `Creature` records to JSON.
     - [x] Allow specifying the library file via `--library`.
