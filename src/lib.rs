@@ -3,6 +3,7 @@ pub mod breeding;
 pub mod creature;
 pub mod library;
 pub mod ocr;
+pub mod raising;
 pub mod server_multipliers;
 pub mod species;
 pub mod stats;
