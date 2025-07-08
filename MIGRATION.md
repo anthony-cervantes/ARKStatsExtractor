@@ -9,11 +9,13 @@ This document outlines a stepwise approach to port the existing .NET codebase to
 5. [x] **Port core structs**: `Species`, `Stats`, `ServerMultipliers`.
 6. [x] **Implement JSON loading tests** to verify data parsing.
 7. [x] **Build minimal CLI and GUI** that load and display data.
+    - [x] Provide a `--gui` flag to launch the graphical interface.
 8. [ ] **Continue porting features** such as the breeding planner, OCR, and other tools.
     - [x] Port `Score` struct from breeding planner.
     - [x] Add `Creature` stat fields and implement breeding pair scoring.
 9. [x] **Persist creature library**.
     - [x] Serialize and deserialize `Creature` records to JSON.
+    - [x] Allow specifying the library file via `--library`.
     - [x] Provide CLI commands to add/remove creatures.
     - [x] Write tests for library persistence.
 10. [x] **GUI for creature library**.
@@ -29,6 +31,7 @@ This document outlines a stepwise approach to port the existing .NET codebase to
 13. [x] **OCR import**.
     - [x] Use the `leptess` crate to read creature data from screenshots.
     - [x] Provide a CLI command and GUI button to trigger OCR import.
+    - [x] Parse OCR text into `Creature` objects with unit tests.
 14. [x] **Packaging and release**.
     - [x] Build native binaries for major platforms with `cargo build --release`.
     - [x] Update `README.md` with build and usage instructions.
