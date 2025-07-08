@@ -13,6 +13,9 @@ This document outlines a stepwise approach to port the existing .NET codebase to
 8. [ ] **Continue porting features** such as the breeding planner, OCR, and other tools.
     - [x] Port `Score` struct from breeding planner.
     - [x] Add `Creature` stat fields and implement breeding pair scoring.
+    - [ ] Port advanced breeding planner tools for in-depth pair analysis.
+    - [ ] Implement raising and taming controls with timers and consumables.
+    - [ ] Migrate remaining utilities such as export managers and overlays.
 9. [x] **Persist creature library**.
     - [x] Serialize and deserialize `Creature` records to JSON.
     - [x] Allow specifying the library file via `--library`.
