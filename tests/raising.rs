@@ -11,6 +11,7 @@ fn raising_times_basic() {
         blueprint_path: "path".into(),
         variants: vec![],
         full_stats_raw: vec![],
+        taming: None,
         breeding: Some(BreedingData {
             gestation_time: 100.0,
             incubation_time: 200.0,

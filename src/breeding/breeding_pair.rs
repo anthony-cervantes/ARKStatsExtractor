@@ -90,3 +90,46 @@ pub fn calculate_mutation_chance(mother: &Creature, father: &Creature) -> f64 {
     let f = if father.mutations < 20 { 0.025 } else { 0.0 };
     1.0 - (1.0 - m) * (1.0 - f)
 }
+
+/// Expected offspring stat levels assuming 70% chance to inherit the higher
+/// parent value for each stat.
+pub fn expected_offspring_levels(mother: &Creature, father: &Creature) -> [f64; STATS_COUNT] {
+    let mut levels = [0.0; STATS_COUNT];
+    for (i, level) in levels.iter_mut().enumerate().take(STATS_COUNT) {
+        let high = mother.stats[i].max(father.stats[i]) as f64;
+        let low = mother.stats[i].min(father.stats[i]) as f64;
+        *level = high * 0.7 + low * 0.3;
+    }
+    levels
+}
+
+/// Calculate the expected total score for an offspring using the provided
+/// server multipliers.
+pub fn expected_offspring_score(
+    mother: &Creature,
+    father: &Creature,
+    multipliers: Option<&ServerMultipliers>,
+) -> Score {
+    let levels = expected_offspring_levels(mother, father);
+    let total: f64 = levels
+        .iter()
+        .enumerate()
+        .map(|(i, l)| {
+            if let Some(sm) = multipliers {
+                if let Some(stat_mults) = sm
+                    .stat_multipliers
+                    .as_ref()
+                    .and_then(|v| v.get(i))
+                    .and_then(|o| o.as_ref())
+                {
+                    l * stat_mults[ServerMultipliers::INDEX_LEVEL_DOM]
+                } else {
+                    *l
+                }
+            } else {
+                *l
+            }
+        })
+        .sum();
+    Score::primary(total)
+}
