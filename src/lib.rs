@@ -7,6 +7,7 @@ pub mod raising;
 pub mod server_multipliers;
 pub mod species;
 pub mod stats;
+pub mod taming;
 
 use serde_json::Value;
 use std::error::Error;
