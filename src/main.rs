@@ -1,5 +1,6 @@
 use ARKStatsExtractor::{
     creature::{Creature, Sex},
+    export::{export_creature, import_creature},
     library::CreatureLibrary,
     load_server_multipliers_profile, load_species,
     stats::STATS_COUNT,
@@ -21,6 +22,12 @@ enum Commands {
     Remove { name: String },
     /// Import a creature from an image using OCR
     Ocr { image: String },
+    /// Export a creature from the library to a file
+    Export { name: String, file: String },
+    /// Import a creature from a file into the library
+    Import { file: String },
+    /// Show a simple overlay with a message
+    Overlay { message: String },
 }
 
 #[derive(Parser)]
@@ -67,6 +74,30 @@ fn run_cli(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
             let creature = ARKStatsExtractor::ocr::read_creature_from_image(image)?;
             lib.add(creature);
             lib.save(&args.library)?;
+        }
+        Some(Commands::Export { name, file }) => {
+            if let Some(c) = lib.creatures.iter().find(|c| &c.name == name) {
+                export_creature(c, file)?;
+            } else {
+                eprintln!("Creature not found: {name}");
+            }
+        }
+        Some(Commands::Import { file }) => {
+            let creature = import_creature(file)?;
+            lib.add(creature);
+            lib.save(&args.library)?;
+        }
+        Some(Commands::Overlay { message }) => {
+            let options = eframe::NativeOptions::default();
+            eframe::run_native(
+                "Overlay",
+                options,
+                Box::new(move |_cc| {
+                    Ok(Box::new(ARKStatsExtractor::overlay::OverlayApp::new(
+                        message.clone(),
+                    )))
+                }),
+            )?;
         }
         None => {
             for c in &lib.creatures {
