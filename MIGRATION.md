@@ -38,5 +38,7 @@ This document outlines a stepwise approach to port the existing .NET codebase to
 14. [x] **Packaging and release**.
     - [x] Build native binaries for major platforms with `cargo build --release`.
     - [x] Update `README.md` with build and usage instructions.
+15. [x] **Utility functions**.
+    - [x] Port `dice_coefficient` for fuzzy species name matching.
 
 Each migration step should be kept small, with tests and formatting run after every change to ensure stability.
